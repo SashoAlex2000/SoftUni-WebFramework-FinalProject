@@ -1,0 +1,33 @@
+{#{% load static %}#}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo App</title>
+{#    <link rel="stylesheet" href="{% static 'styles.css' %}">#}
+</head>
+<body>
+    <header>
+        {% include 'utils_templates/nav.html' %}
+    </header>
+
+    <main class="main">
+        <!-- The content will go here -->
+
+        {% block page_content %}
+
+        {% endblock %}
+
+    </main>
+
+<div class="page-footer">
+        <p>
+            © 2022 Small test Website for creating <span class="footer-logo">ToDo's</span> :) made by
+            <a href="https://github.com/SashoAlex2000" target="_blank">SashoAlex2000</a>
+        </p>
+
+</div>
+
+</body>
+</html>

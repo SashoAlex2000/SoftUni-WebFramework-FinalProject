@@ -1,0 +1,15 @@
+{% extends 'utils_templates/base.html' %}
+
+{% block page_content %}
+
+    <div class="home-page">
+        <form action="{% url 'login' %}" method="post">
+            {{ form.as_div }}
+            <button type="submit">Sign In</button>
+            {% csrf_token %}
+        </form>
+
+
+    </div>
+
+{% endblock %}

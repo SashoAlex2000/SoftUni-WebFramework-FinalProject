@@ -1,0 +1,22 @@
+{% extends 'utils_templates/base.html' %}
+
+{% block page_content %}
+
+    <div class="home-page">
+        <h1>Hello there!
+        {% if request.user.is_authenticated %}
+            {{ user }}
+         {% endif %}
+        </h1>
+
+        <div class="items-display">
+            {% for item in object_list %}
+                {{ item.name }}
+                {{ item.photo }}
+                <img src='/media/{{ item.photo }}' alt="">
+            {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}
