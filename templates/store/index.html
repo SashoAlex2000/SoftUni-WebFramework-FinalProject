@@ -3,18 +3,67 @@
 {% block page_content %}
 
     <div class="home-page">
-        <h1>Hello there!
-        {% if request.user.is_authenticated %}
-            {{ user }}
-         {% endif %}
-        </h1>
 
-        <div class="items-display">
-            {% for item in object_list %}
-                {{ item.name }}
-                {{ item.photo }}
-                <img src='/media/{{ item.photo }}' alt="">
-            {% endfor %}
+        <div class="search-bar">
+            <form action="">
+                <input type="text">
+                <select name="" id="">
+                    <option value="1">First option</option>
+                    <option value="2">second option</option>
+                </select>
+                <button type="submit">Search</button>
+                {% csrf_token %}
+            </form>
+        </div>
+
+        <div class="catalogue-greeting">
+            {% if request.user.is_authenticated %}
+                <h1>Welcome Back {{ user }}!</h1>
+            {% else %}
+                <h1>Welcome to MLO Store</h1>
+                <h3>Explore our wide range of products and offers</h3>
+                <p><a href="{% url "login" %}">Login</a>
+                    /
+                    <a href="{% url "register" %}">Register</a>
+                    and top up your account if you want to purchase something!
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="items-container">
+
+            <div class="tags-container">
+
+                <h4>Categories:</h4>
+                <div class="tags-list">
+                    <a href="">Electronics</a>
+                    <a href="">Clothes (1)</a>
+                    <a href="">X-Mass</a>
+                    <a href="">Funny gifts</a>
+                </div>
+
+            </div>
+            <div class="items-list">
+                {% for item in object_list %}
+
+                    <a href="" class="item">
+                        <img src="/media/{{ item.photo }}" alt="" class="item-img">
+                        <h5>{{ item.name }}</h5>
+                        <p>{{ item.price }}</p>
+                    </a>
+
+{#                    <div class="single-item">#}
+{#                        <p>{{ item.name }}</p>#}
+{#                        <p>{{ item.price }}</p>#}
+{##}
+{#                        <div class="catalog-item-image">#}
+{#                            <img src='/media/{{ item.photo }}' alt="">#}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+                {% endfor %}
+            </div>
+
         </div>
 
     </div>

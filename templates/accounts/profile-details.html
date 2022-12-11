@@ -1,0 +1,23 @@
+{% extends 'utils_templates/base.html' %}
+
+{% block page_content %}
+
+    <div class="profile-page">
+
+
+        <div class="profile-info">
+            <h3>{{ object.username }}</h3>
+            {% if object.first_name and object.last_name %}
+                <h4>{{ object.first_name }} {{ object.last_name }}</h4>
+            {% endif %}
+            <h4>{{ object.gender }}</h4>
+            Your balance: {{ object.money }}
+        </div>
+
+        <div class="profile-image">
+
+        </div>
+
+    </div>
+
+{% endblock %}

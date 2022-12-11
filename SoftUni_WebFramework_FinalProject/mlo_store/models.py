@@ -1,3 +1,4 @@
+from PIL import Image
 from django.db import models
 
 # Create your models here.
@@ -39,6 +40,15 @@ class Item(models.Model):
 
     )
 
+    def save(self, *args, **kwargs):
+        super().save(self, *args, **kwargs)
+
+        img = Image.open(self.photo.path)
+
+        if img.height > 300 or img.width > 300:
+            new_img = (300, 300)
+            img.thumbnail(new_img)
+            img.save(self.photo.path)
 
 
 
