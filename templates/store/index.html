@@ -2,70 +2,86 @@
 
 {% block page_content %}
 
-    <div class="home-page">
+    {#    <div class="home-page">#}
 
-        <div class="search-bar">
-            <form action="">
-                <input type="text">
-                <select name="" id="">
-                    <option value="1">First option</option>
-                    <option value="2">second option</option>
+    <div class="search-bar">
+        <div class="form-div">
+            <form action="{% url 'index' %}" method="get" class="search-form">
+                <input type="text" name="pattern">
+                <select name="department" id="">
+                    <option value="all">All</option>
+                    {% for key,value in categories %}
+                        <option value="{{ key }}">{{ value }}</option>
+                    {% endfor %}
                 </select>
+                <select name="sorting" id="">
+                    <option value="date-asc">By date, ascending</option>
+                    <option value="date-desc">By date, desc</option>
+                    <option value="price-desc">By price, desc</option>
+                    <option value="price-asc">By price, ascending</option>
+                </select>
+
                 <button type="submit">Search</button>
                 {% csrf_token %}
             </form>
         </div>
+    </div>
 
-        <div class="catalogue-greeting">
-            {% if request.user.is_authenticated %}
-                <h1>Welcome Back {{ user }}!</h1>
-            {% else %}
-                <h1>Welcome to MLO Store</h1>
-                <h3>Explore our wide range of products and offers</h3>
-                <p><a href="{% url "login" %}">Login</a>
-                    /
-                    <a href="{% url "register" %}">Register</a>
-                    and top up your account if you want to purchase something!
-                </p>
-            {% endif %}
-        </div>
+    <div class="catalogue-greeting">
+        {% if request.user.is_authenticated %}
+            <h1>Welcome Back {{ user }}!</h1>
+        {% else %}
+            <h1>Welcome to MLO Store</h1>
+            <h3>Explore our wide range of products and offers</h3>
+            <p><a href="{% url "login" %}">Login</a>
+                /
+                <a href="{% url "register" %}">Register</a>
+                and top up your account if you want to purchase something!
+            </p>
+        {% endif %}
+    </div>
 
-        <div class="items-container">
+    <div class="recipes-container">
 
-            <div class="tags-container">
+        <div class="tags-container">
 
-                <h4>Categories:</h4>
-                <div class="tags-list">
-                    <a href="">Electronics</a>
-                    <a href="">Clothes (1)</a>
-                    <a href="">X-Mass</a>
-                    <a href="">Funny gifts</a>
-                </div>
+            <h4>Categories:</h4>
+            <div class="tags-list">
+                {% for key,value in categories %}
+                    <a href="">{{ value }}</a>
+                {% endfor %}
 
             </div>
-            <div class="items-list">
-                {% for item in object_list %}
 
-                    <a href="" class="item">
-                        <img src="/media/{{ item.photo }}" alt="" class="item-img">
+        </div>
+        <div class="recipes-list">
+            {% for item in object_list %}
+
+                {% if item.owner_id != request.user.pk %}
+
+                    <a href="{% url 'details item' pk=item.pk %}" class="recipe">
+
+                        <img src="/media/{{ item.photo }}" alt="" class="img recipe-img">
                         <h5>{{ item.name }}</h5>
                         <p>{{ item.price }}</p>
+
                     </a>
 
-{#                    <div class="single-item">#}
-{#                        <p>{{ item.name }}</p>#}
-{#                        <p>{{ item.price }}</p>#}
-{##}
-{#                        <div class="catalog-item-image">#}
-{#                            <img src='/media/{{ item.photo }}' alt="">#}
-{#                        </div>#}
-{##}
-{#                    </div>#}
-                {% endfor %}
-            </div>
-
+                    {#                    <div class="single-item">#}
+                    {#                        <p>{{ item.name }}</p>#}
+                    {#                        <p>{{ item.price }}</p>#}
+                    {##}
+                    {#                        <div class="catalog-item-image">#}
+                    {#                            <img src='/media/{{ item.photo }}' alt="">#}
+                    {#                        </div>#}
+                    {##}
+                    {#                    </div>#}
+                {% endif %}
+            {% endfor %}
         </div>
 
     </div>
+
+    {#    </div>#}
 
 {% endblock %}

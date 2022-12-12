@@ -1,0 +1,18 @@
+{% extends 'utils_templates/base.html' %}
+{% load static %}
+
+{% block page_content %}
+
+    <div class="details-container">
+        <div class="profile-picture">
+            <img src="{% static 'images/profile.png' %}" alt="profile picture">
+        </div>
+        <div class="profile-info">
+            {{ object.name }}
+            {{ object.price }}
+            {{ object.description }}
+        </div>
+
+    </div>
+
+{% endblock %}

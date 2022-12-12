@@ -1,22 +1,23 @@
 {% extends 'utils_templates/base.html' %}
+{% load static %}
 
 {% block page_content %}
 
-    <div class="profile-page">
+    <div class="profile-page-container">
 
+        <div class="profile-image">
+            <img src="{% static 'images/profile_picture.jpeg' %}" alt="">
+        </div>
 
         <div class="profile-info">
-            <h3>{{ object.username }}</h3>
+            <h3>Username: {{ object.username }}</h3>
             {% if object.first_name and object.last_name %}
-                <h4>{{ object.first_name }} {{ object.last_name }}</h4>
+                <h4>Full name: {{ object.first_name }} {{ object.last_name }}</h4>
             {% endif %}
-            <h4>{{ object.gender }}</h4>
+            <h4>Gender: {{ object.gender }}</h4>
             Your balance: {{ object.money }}
         </div>
 
-        <div class="profile-image">
-
-        </div>
 
     </div>
 
