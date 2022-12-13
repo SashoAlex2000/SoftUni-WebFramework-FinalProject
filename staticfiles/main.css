@@ -373,6 +373,7 @@ main
     /*padding-top: 2rem;*/
     min-height: calc(100vh - (6rem + 4rem));
     /*border: 1px solid rebeccapurple;*/
+    /*border: 1px solid red;*/
 
 }
 
@@ -449,6 +450,12 @@ index / catalogue
 
 .recipe {
     display: block;
+    border: 0.1rem solid transparent;
+}
+
+.recipe:hover {
+    border: 0.1rem solid #0f172a;
+    border-radius: 5px;
 }
 
 .recipe-img {
@@ -587,7 +594,7 @@ SignIn / SignUp form
 }
 
 .form-message h4 {
-    font-family: Verdana,Geneva,sans-serif;
+    font-family: Verdana, Geneva, sans-serif;
 }
 
 .login-form {
@@ -633,4 +640,64 @@ SignIn / SignUp form
     text-align: center;
     font-size: 0.75rem;
 
+}
+
+/*
+===============
+Create Item Form
+===============
+*/
+
+
+.create-form-container {
+    /*height: 85vh;*/
+    height: 80vh;
+    justify-content: center;
+    /*background: black;*/
+}
+
+.create-item-data {
+    width: 65%;
+    margin: auto;
+    padding-top: 1rem;
+    border: 0.2rem solid #e0b053;
+    padding-bottom: 4rem;
+    border-radius: 20px;
+    background: #1F271B;
+}
+
+
+.create-item-form {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+    padding-top: 1.15rem;
+}
+
+.single-form-div {
+    width: 50%;
+    margin: auto;
+    border-bottom: 0.2rem solid dimgrey;
+    color:white;
+}
+
+.single-form-div input:focus {
+    border: 0.25rem solid purple;
+}
+
+.create-btn {
+    border-color: #3498db;
+    color: #0e0606;
+    box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
+    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+    width: 45%;
+    border-radius: 15px;
+    margin-top: 1rem;
+    height: 2rem;
+    font-size: 1.15rem;
+}
+
+.create-btn:hover {
+    box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
 }

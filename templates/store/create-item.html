@@ -2,13 +2,32 @@
 
 {% block page_content %}
 
-    <div class="form-container">
-        <form action="{% url 'create item' %}" method="post" enctype="multipart/form-data">
-            {{ form.as_div }}
-            <button type="submit">Add</button>
-            {% csrf_token %}
-        </form>
+    <div class="create-form-container">
 
+        <div class="create-item-data">
+
+            <div class="create-item-message">
+                {% if form.errors %}
+                    {{ form.errors }}
+                {% endif %}
+            </div>
+
+            <div class="create-item-form">
+                <form action="{% url 'create item' %}" method="post" enctype="multipart/form-data">
+{#                    {{ form.as_div }}#}
+
+                    {% for field in form %}
+                        <div class="single-form-div">
+                            {{ field.label_tag }} <br>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="create-btn">Add</button>
+                    {% csrf_token %}
+                </form>
+
+            </div>
+        </div>
     </div>
 
 {% endblock %}

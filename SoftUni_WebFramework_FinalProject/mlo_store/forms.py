@@ -16,6 +16,17 @@ class ItemBaseForm(forms.ModelForm):
                     'type': 'date',
                 }
             ),
+            'description': forms.Textarea(
+                attrs={
+                    'rows': 4,
+                    'cols': 15,
+                }
+            ),
+            'username': forms.TextInput(
+                attrs={
+                    'autofocus': 'off',
+                }
+            )
         }
 
 
