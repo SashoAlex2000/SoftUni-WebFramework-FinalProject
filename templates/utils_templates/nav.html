@@ -10,6 +10,7 @@
                     <a href="{% url 'login' %}" class="anchor-tag">Sign In</a>
                     <a href="{% url 'register' %}" class="anchor-tag">Sign Up</a>
                 {% else %}
+                    <a href="{% url 'create item' %}" class="anchor-tag">Add Listing</a>
                     <a href="{% url 'profile' pk=request.user.pk %}" class="anchor-tag">Profile</a>
                     <a href="{% url 'logout' %}" class="anchor-tag">Logout</a>
                 {% endif %}

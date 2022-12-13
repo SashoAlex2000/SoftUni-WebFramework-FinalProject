@@ -5,19 +5,20 @@
 
     <div class="profile-page-container">
 
-        <div class="profile-image">
-            <img src="{% static 'images/profile_picture.jpeg' %}" alt="">
-        </div>
+        <div class="profile-center">
+            <div class="profile-image">
+                <img src="{% static 'images/profile_picture.jpeg' %}" alt="">
+            </div>
 
-        <div class="profile-info">
-            <h3>Username: {{ object.username }}</h3>
-            {% if object.first_name and object.last_name %}
-                <h4>Full name: {{ object.first_name }} {{ object.last_name }}</h4>
-            {% endif %}
-            <h4>Gender: {{ object.gender }}</h4>
-            Your balance: {{ object.money }}
+            <div class="profile-info">
+                <h3>Username: {{ object.username }}</h3>
+                {% if object.first_name and object.last_name %}
+                    <h4>Full name: {{ object.first_name }} {{ object.last_name }}</h4>
+                {% endif %}
+                <h4>Gender: {{ object.gender }}</h4>
+                Your balance: {{ object.money }}
+            </div>
         </div>
-
 
     </div>
 

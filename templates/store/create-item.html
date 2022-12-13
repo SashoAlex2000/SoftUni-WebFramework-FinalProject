@@ -1,0 +1,14 @@
+{% extends 'utils_templates/base.html' %}
+
+{% block page_content %}
+
+    <div class="form-container">
+        <form action="{% url 'create item' %}" method="post" enctype="multipart/form-data">
+            {{ form.as_div }}
+            <button type="submit">Add</button>
+            {% csrf_token %}
+        </form>
+
+    </div>
+
+{% endblock %}

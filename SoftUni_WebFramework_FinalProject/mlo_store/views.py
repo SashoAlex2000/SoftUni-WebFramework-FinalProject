@@ -1,7 +1,8 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic as views
 
+from SoftUni_WebFramework_FinalProject.mlo_store.forms import ItemCreateForm
 from SoftUni_WebFramework_FinalProject.mlo_store.models import Item
 
 ITEM_CATEGORIES = {
@@ -35,6 +36,23 @@ class ItemListView(views.ListView):
         'categories': [[key, value] for key, value in ITEM_CATEGORIES.items()],
     }
 
+    def get_context_data(self, *args, **kwargs):
+        data = super().get_context_data(*args, **kwargs)
+
+        pattern = self.request.GET.get('pattern', None)
+        if pattern:
+            data['pattern'] = pattern
+
+        department = self.request.GET.get('department', None)
+        if department:
+            data["department"] = department
+
+        sorting_param = self.__get_sorting_param()
+        if sorting_param:
+            data['sorting_param'] = sorting_param
+
+        return data
+
     def get_queryset(self):
         queryset = super().get_queryset()
 
@@ -62,15 +80,17 @@ class ItemListView(views.ListView):
 
         if sorting_param:
             if sorting_param == 'price-asc':
-                queryset= queryset.order_by('price')
+                queryset = queryset.order_by('price')
             elif sorting_param == 'price-desc':
-                queryset= queryset.order_by('-price')
+                queryset = queryset.order_by('-price')
             elif sorting_param == 'date-desc':
                 queryset = queryset.order_by('-publication_date')
             elif sorting_param == 'date-asc':
                 queryset = queryset.order_by('publication_date')
         else:
             queryset = queryset.order_by('publication_date')
+
+        outside_context = pattern
 
         print(pattern if pattern else 'NONE')
         print(desired_department)
@@ -91,3 +111,28 @@ class ItemDetailView(views.DetailView):
     model = Item
 
     template_name = 'store/details.html'
+
+
+def item_create_view(request):
+    if request.method == 'GET':
+        form = ItemCreateForm
+    else:
+        form = ItemCreateForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            item = form.save(commit=False)
+
+            item.owner = request.user
+            item.save()
+
+            return redirect('index')
+
+    context = {
+        'form': form,
+    }
+
+    return render(
+        request,
+        'store/create-item.html',
+        context
+    )

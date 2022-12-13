@@ -7,18 +7,21 @@
     <div class="search-bar">
         <div class="form-div">
             <form action="{% url 'index' %}" method="get" class="search-form">
-                <input type="text" name="pattern">
+
+                <input type="text" name="pattern" {% if pattern %} value="{{ pattern }}" {% endif %}>
                 <select name="department" id="">
                     <option value="all">All</option>
                     {% for key,value in categories %}
-                        <option value="{{ key }}">{{ value }}</option>
+                        <option value="{{ key }}"
+                                {% if department and department == key %} selected {% endif %}
+                        >{{ value }}</option>
                     {% endfor %}
                 </select>
                 <select name="sorting" id="">
                     <option value="date-asc">By date, ascending</option>
-                    <option value="date-desc">By date, desc</option>
-                    <option value="price-desc">By price, desc</option>
-                    <option value="price-asc">By price, ascending</option>
+                    <option value="date-desc" {% if sorting_param == "date-desc" %} selected {% endif %}>By date, desc</option>
+                    <option value="price-desc" {% if sorting_param == "price-desc" %} selected {% endif %}>By price, desc</option>
+                    <option value="price-asc" {% if sorting_param == "price-asc" %} selected {% endif %}>By price, ascending</option>
                 </select>
 
                 <button type="submit">Search</button>

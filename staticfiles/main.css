@@ -406,7 +406,6 @@ index / catalogue
 }
 
 
-
 .recipes-container {
     display: grid;
     gap: 2rem 1rem;
@@ -523,9 +522,20 @@ profile page
 ===============
 */
 
+
 .profile-page-container {
-    margin-top: 2rem;
+    width: 70%;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+}
+
+.profile-center {
+    /*margin-top: 2rem;*/
+    padding-top: 16%;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    column-gap: 11rem;
 }
 
