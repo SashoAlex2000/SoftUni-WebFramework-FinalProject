@@ -91,7 +91,7 @@ h5 {
     font-family: var(--headingFont);
     font-weight: 400;
     line-height: 1.3;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     letter-spacing: var(--letterSpacing);
 }
 
@@ -205,7 +205,7 @@ ul {
     display: block;
     font-size: var(--smallText);
     margin-bottom: 0.5rem;
-    text-transform: capitalize;
+    /*text-transform: capitalize;*/
     letter-spacing: var(--letterSpacing);
 }
 
@@ -298,7 +298,7 @@ nav bar
 
 .nav-links {
     display: flex;
-    background: lightblue;
+    background: #55868C;
     height: 6rem;
 }
 
@@ -334,7 +334,7 @@ footer
 
 .page-footer {
     height: 4rem;
-    background: #86c7ba;
+    background: #1F271B;
     color: whitesmoke;
     display: flex;
     align-items: center;
@@ -349,13 +349,14 @@ footer
 
 .footer-logo,
 .page-footer a {
-    color: #be3030
+    color: #F06449
 }
 
 
 .footer-logo:hover,
 .page-footer a:hover {
-    color: #58A4B0
+    transition: var(--transition);
+    color: #c42d0d
 }
 
 /*
@@ -539,3 +540,97 @@ profile page
     column-gap: 11rem;
 }
 
+/*
+===============
+SignIn / SignUp form
+===============
+*/
+
+.form-container {
+    height: 80vh;
+    justify-content: center;
+}
+
+.form-data {
+    width: 65%;
+    margin: auto;
+    padding-top: 6rem;
+}
+
+.register-form-data {
+    width: 65%;
+    margin: auto;
+    padding-top: 1.5rem;
+}
+
+
+.form-message {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+
+}
+
+.form-message a {
+    color: #3D3B8E;
+}
+
+.form-message h3 {
+    font-family: 'buffalo', sans-serif;
+    font-size: 5rem;
+    margin-bottom: 0;
+}
+
+.form-message h5 {
+    font-size: 0.79rem;
+    letter-spacing: 0.001rem;
+}
+
+.form-message h4 {
+    font-family: Verdana,Geneva,sans-serif;
+}
+
+.login-form {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+    padding-top: 1.15rem;
+}
+
+.login-form div {
+    margin-top: 1rem;
+
+}
+
+.login-form input {
+    width: 50%;
+    border-radius: 8px;
+    height: 1.65rem;
+}
+
+.form-input-change-background {
+    background: #e7c2c2;
+}
+
+
+.form-button {
+    margin-top: 1rem;
+    border-radius: 15px;
+    border: 0.00rem solid black;
+    width: 50%;
+    height: 1.95rem;
+    background: #CE5374;
+}
+
+.form-button:hover {
+    background: #b41f40
+}
+
+.error-p-msg {
+    margin: 0;
+    color: #e12323;
+    padding: 0;
+    text-align: center;
+    font-size: 0.75rem;
+
+}

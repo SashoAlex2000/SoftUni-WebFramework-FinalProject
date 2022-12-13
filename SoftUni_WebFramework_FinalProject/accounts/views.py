@@ -10,6 +10,7 @@ from SoftUni_WebFramework_FinalProject.accounts.forms import UserCreateForm
 
 UserModel = get_user_model()
 
+
 class SignInView(auth_views.LoginView):
 
     def dispatch(self, request, *args, **kwargs):
@@ -40,7 +41,6 @@ class SignUpView(views.CreateView):
 
 
 class ProfileDetailView(views.DetailView):
-
     model = UserModel
 
     template_name = 'accounts/profile-details.html'

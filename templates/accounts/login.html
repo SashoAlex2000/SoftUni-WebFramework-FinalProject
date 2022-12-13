@@ -2,12 +2,26 @@
 
 {% block page_content %}
 
-    <div class="home-page">
-        <form action="{% url 'login' %}" method="post">
-            {{ form.as_div }}
-            <button type="submit">Sign In</button>
-            {% csrf_token %}
-        </form>
+    <div class="form-container">
+
+        <div class="form-data">
+            <div class="form-message">
+                <h3>Welcome!</h3>
+                <h5>Sign in to MLO or <a href="{% url 'register' %}">create an account</a></h5>
+            </div>
+            <form action="{% url 'login' %}" method="post" class="login-form">
+
+                {% for field in form %}
+                    <div>
+                        {{ field }}
+                    </div>
+
+                {% endfor %}
+{#                {{ form.as_div }}#}
+                <button type="submit" class="form-button">Sign In</button>
+                {% csrf_token %}
+            </form>
+        </div>
 
 
     </div>
