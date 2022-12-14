@@ -6,7 +6,7 @@
 
         <div class="register-form-data">
             <div class="form-message">
-                <h4>Create you account</h4>
+                <h4 autofocus>Create you account</h4>
                 <h5>Already have an account? <a href="{% url 'login' %}">Sign In</a></h5>
                 {% if form.errors %}
                     <p>{{ form.errors }}</p>
@@ -36,6 +36,9 @@
                 field.addEventListener('focusin', inputFocus)
                 field.addEventListener('focusout', inputUnFocus)
             }
+
+            const genderField = document.getElementsByName('gender')[0];
+            genderField.focus()
         }
 
         function inputFocus (event) {

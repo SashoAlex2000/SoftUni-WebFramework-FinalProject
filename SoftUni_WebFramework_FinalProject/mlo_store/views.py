@@ -84,11 +84,11 @@ class ItemListView(views.ListView):
             elif sorting_param == 'price-desc':
                 queryset = queryset.order_by('-price')
             elif sorting_param == 'date-desc':
-                queryset = queryset.order_by('-publication_date')
+                queryset = queryset.order_by('-pk')
             elif sorting_param == 'date-asc':
-                queryset = queryset.order_by('publication_date')
+                queryset = queryset.order_by('pk')
         else:
-            queryset = queryset.order_by('publication_date')
+            queryset = queryset.order_by('pk')
 
         outside_context = pattern
 
@@ -110,7 +110,47 @@ class ItemListView(views.ListView):
 class ItemDetailView(views.DetailView):
     model = Item
 
+    def get_context_data(self, *args, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        current_ID = self.kwargs['pk']
+        current_item = Item.objects.filter(pk=current_ID).get()
+        print(current_item.owner.isCompany)
+        fee = 1 if current_item.owner.isCompany else 2
+        data['fee'] = fee
+        print(current_item.price)
+        total_price = current_item.price + fee
+        data['total_price'] = total_price
+
+        data['can_buy'] = total_price < self.request.user.money
+        print(total_price < self.request.user.money)
+
+        return data
+
     template_name = 'store/details.html'
+
+
+def buy_item(request, pk):
+
+    print(request.META['HTTP_REFERER'])
+    current_item = Item.objects.filter(pk=pk).get()
+    current_item.quantity -= 1
+    current_item.save()
+
+    cost = current_item.price
+    print(cost)
+
+    user_owner = current_item.owner
+    user_owner.money += cost
+    print(user_owner.money)
+    user_owner.save()
+
+    current_user = request.user
+    print(current_user)
+    current_user.money -= cost
+    current_user.save()
+
+    return redirect('details item', pk=pk)
 
 
 def item_create_view(request):

@@ -678,7 +678,7 @@ Create Item Form
     width: 50%;
     margin: auto;
     border-bottom: 0.2rem solid dimgrey;
-    color:white;
+    color: white;
 }
 
 .single-form-div input:focus {
@@ -700,4 +700,42 @@ Create Item Form
 
 .create-btn:hover {
     box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+}
+
+/*
+===============
+Item Details Form
+===============
+*/
+
+.details-container {
+    height: 80vh;
+    justify-content: center;
+}
+
+.details-inner-container {
+    width: 85%;
+    margin: auto;
+    padding-top: 2.5rem;
+    padding-bottom: 4rem;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+
+}
+
+.details-picture {
+    /*border: 1px solid red;*/
+    justify-content: center;
+    display: flex;
+
+}
+
+.details-picture img {
+    max-width: 100%;
+    width: auto;
+
+    max-height: 100%;
+    height: auto;
 }
