@@ -45,3 +45,13 @@ class UserChargeAccountForm(forms.Form):
         max_digits=9,
         decimal_places=2,
     )
+
+
+class UserComment(forms.Form):
+
+    COMMENT_MAX_LENGTH = 50
+
+    comment = forms.CharField(
+        max_length=COMMENT_MAX_LENGTH,
+    )
+

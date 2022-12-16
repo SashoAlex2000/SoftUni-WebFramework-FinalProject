@@ -118,3 +118,33 @@ class AccountingBalance(models.Model):
         null=False,
     )
 
+
+class ItemComment(models.Model):
+
+    MAX_COMMENT_LENGTH = 100
+
+    comment_text = models.CharField(
+        max_length=MAX_COMMENT_LENGTH,
+        null=False,
+        blank=False,
+    )
+
+    date_of_publication = models.DateTimeField(
+        auto_now_add=True,
+        blank=True,
+        null=False,
+    )
+
+    item = models.ForeignKey(
+        Item,
+        on_delete=models.RESTRICT,
+        null=False,
+        blank=True,
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
+
+

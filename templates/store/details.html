@@ -13,8 +13,11 @@
                 <h4>{{ object.description }}</h4>
                 <p>{{ total_price }}</p>
                 {% if can_buy %}
-                    <form action="{% url 'buy item' pk=object.pk %}">
+                    <form action="{% url 'buy item' pk=object.pk %}" method="post">
+                        <label for="quantity">How many items do you want to buy?</label>
+                        <input type="number" name="quantity">
                         <button class="buy-item-btn">Buy this item!</button>
+                        {% csrf_token %}
                     </form>
                 {% else %}
                     <button disabled>Buy this item!</button>
@@ -23,6 +26,25 @@
 
 
             </div>
+        </div>
+
+        <div class="comment-container">
+            {% if comments %}
+                <div class="comments">
+                    {% for comment in comments %}
+                        <div class="single-comment">
+                            <p>{{ comment.user }} - {{ comment.comment_text }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form action="{% url 'post comment' pk=object.pk %}" method="post">
+                <label for="comment_text">Post your comment</label>
+                <input type="text" name="comment_text">
+                <button type="submit">POST</button>
+                {% csrf_token %}
+            </form>
         </div>
 
     </div>

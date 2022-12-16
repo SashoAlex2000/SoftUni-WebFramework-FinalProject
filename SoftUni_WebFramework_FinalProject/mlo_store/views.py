@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views import generic as views
 
 from SoftUni_WebFramework_FinalProject.mlo_store.forms import ItemCreateForm, UserChargeAccountForm
-from SoftUni_WebFramework_FinalProject.mlo_store.models import Item, AccountingBalance
+from SoftUni_WebFramework_FinalProject.mlo_store.models import Item, AccountingBalance, ItemComment
 
 from django.contrib.auth.decorators import user_passes_test
 
@@ -121,6 +121,7 @@ class ItemListView(views.ListView):  # Main page
 
 class ItemDetailView(views.DetailView):
     model = Item
+    http_method_names = ['get', 'post']
 
     def get_context_data(self, *args, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -138,6 +139,12 @@ class ItemDetailView(views.DetailView):
         data['can_buy'] = total_price < self.request.user.money
         print(total_price < self.request.user.money)
 
+        current_comments = ItemComment.objects.filter(item_id=current_ID)
+        data['comments'] = current_comments
+
+        # trying the post form
+        print(self.request.POST)
+
         return data
 
     template_name = 'store/details.html'
@@ -145,38 +152,47 @@ class ItemDetailView(views.DetailView):
 
 def buy_item(request, pk):
     print(request.META['HTTP_REFERER'])
+    print('buying>?')
+    print(request)
+    print(request.POST)
+
+    # initializing needed variables
+    quantity = int(request.POST['quantity'] or 1)
     current_item = Item.objects.filter(pk=pk).get()
-    current_item.quantity -= 1
-    current_item.save()
-
     cost = current_item.price
-    print(cost)
-
     item_owner = UserModel.objects.filter(pk=current_item.owner.pk).get()
     fee = calculate_fee(cost, item_owner.isCompany)
+    current_user = request.user
+
+    if quantity * cost > current_user.money:
+        return redirect('details item', pk=pk)
+
+    current_item.quantity -= quantity
+    current_item.save()
+
+    print(cost)
 
     print(item_owner)
     print(fee)
 
     user_owner = current_item.owner
-    user_owner.money += cost
-    user_owner.total_money_earned += cost
+    user_owner.money += cost * quantity
+    user_owner.total_money_earned += cost * quantity
     print(user_owner.money)
     user_owner.save()
 
-    current_user = request.user
     print(current_user)
-    current_user.money -= cost
-    current_user.money -= fee
-    current_user.total_money_spent += cost
-    current_user.total_money_spent += fee
+    current_user.money -= cost * quantity
+    current_user.money -= fee * quantity
+    current_user.total_money_spent += cost * quantity
+    current_user.total_money_spent += fee * quantity
     current_user.save()
 
     accounting_balance = AccountingBalance.objects.filter(pk=1).get()
-    accounting_balance.assets -= cost
-    accounting_balance.liabilities -= cost
-    accounting_balance.liabilities -= fee
-    accounting_balance.equity += fee
+    accounting_balance.assets -= cost * quantity
+    accounting_balance.liabilities -= cost * quantity
+    accounting_balance.liabilities -= fee * quantity
+    accounting_balance.equity += fee * quantity
     accounting_balance.save()
 
     return redirect('details item', pk=pk)
@@ -269,3 +285,19 @@ def completed_charging_account(request, pk):
 class AllProfilesListView(views.ListView):
     model = UserModel
     template_name = 'store/all-profiles.html'
+
+
+def post_comment(request, pk):
+    comment_text = request.POST['comment_text']
+    print(comment_text)
+    item = Item.objects.filter(pk=pk).get()
+
+    new_comment = ItemComment(
+        comment_text=comment_text,
+        item=item,
+        user=request.user,
+    )
+
+    new_comment.save()
+
+    return redirect('details item', pk=pk)
