@@ -60,3 +60,20 @@ class AppUser(auth_models.AbstractUser):
         null=True,
         blank=True,
     )
+
+    total_money_spent = models.DecimalField(
+        max_digits=9,
+        decimal_places=2,
+        default=0,
+        null=False,
+        blank=False,
+    )
+
+    total_money_earned = models.DecimalField(
+        max_digits=9,
+        decimal_places=2,
+        default=0,
+        null=False,
+        blank=False,
+    )
+

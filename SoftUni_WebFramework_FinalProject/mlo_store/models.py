@@ -93,3 +93,28 @@ class Item(models.Model):
     #         new_img = (300, 300)
     #         img.thumbnail(new_img)
     #         img.save(self.photo.path)
+
+
+class AccountingBalance(models.Model):
+
+    assets = models.DecimalField(
+        max_digits=9,
+        decimal_places=2,
+        blank=False,
+        null=False,
+    )
+
+    liabilities = models.DecimalField(
+        max_digits=9,
+        decimal_places=2,
+        blank=False,
+        null=False,
+    )
+
+    equity = models.DecimalField(
+        max_digits=9,
+        decimal_places=2,
+        blank=False,
+        null=False,
+    )
+

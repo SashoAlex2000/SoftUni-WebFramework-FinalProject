@@ -1,0 +1,17 @@
+{% extends 'utils_templates/base.html' %}
+{% load static %}
+
+{% block page_content %}
+
+    <h1>Charging Account</h1>
+
+    <form action="{% url 'charge profile' pk=current_profile_pk %}" method="post">
+
+            {{ form }}
+
+        <button type="submit">Top Up Account</button>
+        {% csrf_token %}
+
+    </form>
+
+{% endblock %}

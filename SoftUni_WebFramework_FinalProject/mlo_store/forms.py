@@ -1,6 +1,11 @@
+from enum import Enum
+
 from django import forms
+from django.contrib.auth import get_user_model
 
 from SoftUni_WebFramework_FinalProject.mlo_store.models import Item
+
+UserModel = get_user_model()
 
 
 class ItemBaseForm(forms.ModelForm):
@@ -32,3 +37,11 @@ class ItemBaseForm(forms.ModelForm):
 
 class ItemCreateForm(ItemBaseForm):
     pass
+
+
+class UserChargeAccountForm(forms.Form):
+
+    top_up_amount = forms.DecimalField(
+        max_digits=9,
+        decimal_places=2,
+    )

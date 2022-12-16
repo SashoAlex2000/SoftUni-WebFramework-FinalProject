@@ -8,6 +8,9 @@
         <div class="profile-center">
             <div class="profile-image">
                 <img src="{% static 'images/profile_picture.jpeg' %}" alt="">
+                {% if request.user.is_staff %}
+                    <div><a href="{% url 'charge profile' pk=object.pk %}">Top Up this account</a></div>
+                {% endif %}
             </div>
 
             <div class="profile-info">
