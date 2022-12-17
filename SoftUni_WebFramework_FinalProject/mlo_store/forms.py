@@ -39,6 +39,13 @@ class ItemCreateForm(ItemBaseForm):
     pass
 
 
+class ItemEditForm(ItemBaseForm):
+
+    class Meta:
+        model = Item
+        exclude = ('publication_date', 'owner', 'photo')
+
+
 class UserChargeAccountForm(forms.Form):
 
     top_up_amount = forms.DecimalField(

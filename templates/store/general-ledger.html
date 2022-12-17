@@ -1,0 +1,26 @@
+{% extends 'utils_templates/base.html' %}
+
+{% block page_content %}
+
+    <div class="ledger-container">
+        <div class="ledger-center">
+            <div class="position-div">
+                <h2>ASSETS</h2>
+                <h5>{{ ledger.assets }}</h5>
+
+            </div>
+            <div class="position-div">
+                <h2>Liabilities</h2>
+                <h5>{{ ledger.liabilities }}</h5>
+            </div>
+            <div class="position-div">
+                <h2>Equity(revenue)</h2>
+                <h5>{{ ledger.equity }}</h5>
+            </div>
+
+
+
+        </div>
+    </div>
+
+{% endblock %}

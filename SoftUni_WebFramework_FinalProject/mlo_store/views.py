@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views import generic as views
 
-from SoftUni_WebFramework_FinalProject.mlo_store.forms import ItemCreateForm, UserChargeAccountForm
+from SoftUni_WebFramework_FinalProject.mlo_store.forms import ItemCreateForm, UserChargeAccountForm, ItemEditForm
 from SoftUni_WebFramework_FinalProject.mlo_store.models import Item, AccountingBalance, ItemComment, ItemRating
 
 from django.contrib.auth.decorators import user_passes_test
@@ -28,7 +28,7 @@ UserModel = get_user_model()
 # function used to calculate the fee based on whether the owner is a company or not
 def calculate_fee(price, is_company):
     if is_company:
-        fee = 1 if price < 100 else 2 if price < 200 else 2
+        fee = 1 if price < 100 else 2 if price < 200 else 3
     else:
         fee = 2 if price < 100 else 3
 
@@ -37,6 +37,9 @@ def calculate_fee(price, is_company):
 
 def calculate_average_rating(list_of_ratings, count):
     total_sum = 0
+
+    if count == 0:
+        return 0
 
     for rating in list_of_ratings:
         total_sum += rating.rating
@@ -159,7 +162,7 @@ class ItemDetailView(views.DetailView):
         current_ratings = ItemRating.objects.filter(item_id=current_ID).all()
         ratings_count = current_ratings.count()
         average_rating = calculate_average_rating(current_ratings, ratings_count)
-        has_user_rated = ItemRating.objects.filter(user_id=self.request.user.pk).count()
+        has_user_rated = ItemRating.objects.filter(item_id=current_ID).filter(user_id=self.request.user.pk).count()
 
         data['average_rating'] = average_rating
         data['ratings_count'] = ratings_count
@@ -246,6 +249,31 @@ def item_create_view(request):
     return render(
         request,
         'store/create-item.html',
+        context
+    )
+
+
+def edit_post_view(request, pk):
+    current_item = Item.objects.filter(pk=pk).get()
+
+    if request.method == 'GET':
+        form = ItemEditForm(instance=current_item)
+    else:
+        form = ItemEditForm(request.POST, instance=current_item)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('details item', pk=pk)
+
+    context = {
+        'form': form,
+        'item_id': pk,
+    }
+
+    return render(
+        request,
+        'store/edit-item.html',
         context
     )
 
@@ -349,3 +377,45 @@ def post_rating(request, pk):
     new_rating.save()
 
     return redirect('details item', pk=pk)
+
+
+def remove_rating(request, pk):
+    if not 'HTTP_REFERER' in request.META:
+        return redirect('details item', pk=pk)
+
+    current_item_rating = ItemRating.objects.filter(item_id=pk).filter(user_id=request.user.pk).get()
+    print('this is the current rating')
+    print(current_item_rating)
+    current_item_rating.delete()
+
+    return redirect('details item', pk=pk)
+
+
+def general_ledger_view(request):
+    general_ledger = AccountingBalance.objects.get(pk=1)
+
+    context = {
+        'ledger': general_ledger,
+    }
+
+    return render(
+        request,
+        'store/general-ledger.html',
+        context,
+    )
+
+
+def show_department_view(request, department):
+
+    department_items = Item.objects.filter(category__icontains=department)
+
+    context = {
+        'department_name': ITEM_CATEGORIES[department],
+        'department_items': department_items,
+    }
+
+    return render(
+        request,
+        'store/show-department.html',
+        context,
+    )

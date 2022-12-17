@@ -1,0 +1,15 @@
+{% extends 'utils_templates/base.html' %}
+{% load static %}
+
+{% block page_content %}
+
+    <div class="edit-profile-container">
+
+        <form class="edit-profile-form" action="">
+            {{ form.as_div }}
+        </form>
+        <button type="submit">Save changes</button>
+        {% csrf_token %}
+    </div>
+
+{% endblock %}

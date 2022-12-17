@@ -6,20 +6,37 @@
     <div class="profile-page-container">
 
         <div class="profile-center">
+
             <div class="profile-image">
                 <img src="{% static 'images/profile_picture.jpeg' %}" alt="">
                 {% if request.user.is_staff %}
                     <div><a href="{% url 'charge profile' pk=object.pk %}">Top Up this account</a></div>
                 {% endif %}
+
             </div>
 
             <div class="profile-info">
-                <h3>Username: {{ object.username }}</h3>
+                <h3>Username: <span class="personal-info-span">{{ object.username }}</span></h3>
                 {% if object.first_name and object.last_name %}
-                    <h4>Full name: {{ object.first_name }} {{ object.last_name }}</h4>
+                    <h4>Full name: <span class="personal-info-span">
+                        {{ object.first_name }} {{ object.last_name }}
+                    </span></h4>
                 {% endif %}
-                <h4>Gender: {{ object.gender }}</h4>
-                Your balance: {{ object.money }}
+                <h4>Gender: <span class="personal-info-span">{{ object.gender }}</span></h4>
+                <h4>Your balance: <span class="personal-info-span">{{ object.money }}</span></h4>
+                <h4>You have spent:
+                    <span class="personal-info-span">${{ object.total_money_spent }}</span> dollars on the website
+                </h4>
+                {% if request.user.pk == object.pk %}
+                    <div class="button-div">
+                        <button><a href="{% url 'edit profile' pk=object.pk %}">Edit profile</a></button>
+                    </div>
+
+                {% endif %}
+                <div class="button-div">
+                    <button><a href="{% url 'posts profile' pk=object.pk %}">All offers from this user</a></button>
+                </div>
+
             </div>
         </div>
 

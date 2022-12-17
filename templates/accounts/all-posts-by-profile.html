@@ -1,0 +1,25 @@
+{% extends 'utils_templates/base.html' %}
+{% load static %}
+
+{% block page_content %}
+
+    <div class="all-posts-by-user-container">
+
+        {% for post in object_list %}
+
+            <div class="single-post-by-user">
+                <div class="single-post-info">
+                    <h5>{{ post.name }}</h5>
+                    <h5>{{ post.publication_date }}</h5>
+                    <a href="{% url 'details item' pk=post.pk %}">See this item</a>
+                </div>
+{#                <div class="small-img-container">#}
+{#                    <img class="small-img" src="/media/{{ post.photo }}" alt="">#}
+{#                </div>#}
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

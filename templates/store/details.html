@@ -11,26 +11,50 @@
             <div class="details-info">
                 <h1>{{ object.name }}</h1> <br>
                 <h4>{{ object.description }}</h4>
-                <p>{{ total_price }}</p>
+                {% if request.user.pk == object.owner_id %}
+                    <p>Pure price is: {{ object.price }}</p>
+
+                {% else %}
+                    <p>Price: {{ total_price }}</p>
+                {% endif %}
+
                 <p>{{ average_rating }} / 5 ({{ ratings_count }})</p>
                 {% if not has_user_rated %}
                     <form action="{% url 'post rating' pk=object.pk %}" method="post">
                         <label for="rating">Rate this item! x/5</label>
-                        <input type="number" name="rating">
+                        <select name="rating" id="">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                         <button type="submit">Rate</button>
                         {% csrf_token %}
                     </form>
-                {% endif %}
-                {% if can_buy %}
-                    <form action="{% url 'buy item' pk=object.pk %}" method="post">
-                        <label for="quantity">How many items do you want to buy?</label>
-                        <input type="number" name="quantity">
-                        <button class="buy-item-btn">Buy this item!</button>
+
+                {% else %}
+                    <form action="{% url 'remove rating' pk=object.pk %}">
+
+                        <button type="submit">Remove your rating</button>
                         {% csrf_token %}
                     </form>
+                {% endif %}
+                {% if object.owner_id != request.user.pk %}
+                    {% if can_buy %}
+                        <form action="{% url 'buy item' pk=object.pk %}" method="post">
+                            <label for="quantity">How many items do you want to buy?</label>
+                            <input type="number" name="quantity">
+                            <button class="buy-item-btn">Buy this item!</button>
+                            {% csrf_token %}
+                        </form>
+                    {% else %}
+                        <button disabled>Buy this item!</button>
+                        <p>You do not have enough funds!</p>
+                    {% endif %}
+
                 {% else %}
-                    <button disabled>Buy this item!</button>
-                    <p>You do not have enough funds!</p>
+                    <a href="{% url 'edit item' pk=object.pk %}">Edit this item</a>
                 {% endif %}
 
 
@@ -42,15 +66,21 @@
                 <div class="comments">
                     {% for comment in comments %}
                         <div class="single-comment">
-                            <p>{{ comment.user }} - {{ comment.comment_text }}</p>
+                            <h5>{{ comment.user }}</h5>
+                            <p>{{ comment.comment_text }}</p>
                         </div>
                     {% endfor %}
                 </div>
+
+            {% else %}
+                <div class="comments">
+                    <h3>No comments yet!</h3>
+                </div>
             {% endif %}
 
-            <form action="{% url 'post comment' pk=object.pk %}" method="post">
-                <label for="comment_text">Post your comment</label>
-                <input type="text" name="comment_text">
+            <form action="{% url 'post comment' pk=object.pk %}" method="post" class="comment-post-form">
+                <label for="comment_text">Post your comment</label> <br>
+                <input type="text" name="comment_text"> <br>
                 <button type="submit">POST</button>
                 {% csrf_token %}
             </form>

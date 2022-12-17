@@ -1,0 +1,31 @@
+{% extends 'utils_templates/base.html' %}
+{% load static %}
+
+{% block page_content %}
+
+    <div class="department-header">
+        <h3>{{ department_name }}</h3>
+    </div>
+
+     <div class="department-container">
+
+        <div class="department-list">
+            {% for item in department_items %}
+
+                {% if item.owner_id != request.user.pk %}
+
+                    <a href="{% url 'details item' pk=item.pk %}" class="department-item">
+
+                        <img src="/media/{{ item.photo }}" alt="" class="img department-item-img">
+                        <h5>{{ item.name }}</h5>
+                        <p>{{ item.total_price }}</p>
+
+                    </a>
+
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+
+{% endblock %}

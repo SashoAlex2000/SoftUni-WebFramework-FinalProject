@@ -4,6 +4,40 @@
 
     {#    <div class="home-page">#}
 
+    {#    <div class="catalogue-greeting">#}
+    {#        <h1>{{ request.get_full_path }}</h1>#}
+    {#        {% if request.user.is_authenticated %}#}
+    {#            <h1>Welcome Back {{ user }}!</h1>#}
+    {#        {% else %}#}
+    {#            <h1>Welcome to MLO Store</h1>#}
+    {#            <h3>Explore our wide range of products and offers</h3>#}
+    {#            <p><a href="{% url "login" %}">Login</a>#}
+    {#                /#}
+    {#                <a href="{% url "register" %}">Register</a>#}
+    {#                and top up your account if you want to purchase something!#}
+    {#            </p>#}
+    {#        {% endif %}#}
+    {#    </div>#}
+
+    <div class="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1>MLO Store</h1>
+                {% if request.user.is_authenticated %}
+                    <h4>Welcome Back {{ user }}!</h4>
+
+                {% else %}
+                    <h4>Explore our wide range of products and offers</h4>
+                    <p><a href="{% url "login" %}">Login</a>
+                    /
+                    <a href="{% url "register" %}">Register</a>
+                    and top up your account if you want to purchase something!
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
     <div class="search-bar">
         <div class="form-div">
             <form action="{% url 'index' %}" method="get" class="search-form">
@@ -34,68 +68,56 @@
             </form>
         </div>
         <div class="paginator-div">
-            {% if page_obj.has_previous %}
-{#                <a href="?page=1">first</a>#}
+            <div class="paginator-inner">
+                {% if page_obj.has_previous %}
+                    {#                <a href="?page=1">first</a>#}
 
-                {% if request.GET %}
-                    <a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}">previous</a>
-                {% else %}
-                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% if request.GET %}
+                        <a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}">previous</a>
+                    {% else %}
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
                 {% endif %}
 
-            {% endif %}
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
 
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                {% if page_obj.has_next %}
 
-            {% if page_obj.has_next %}
-
-                {% if request.GET %}
-                    <a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">next</a>
-                {% else %}
-                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    {% if request.GET %}
+                        <a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">next</a>
+                    {% else %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
+                    {#                <a href="{{ request.get_full_path }}?page={{ page_obj.paginator.num_pages }}">last</a>#}
                 {% endif %}
-{#                <a href="{{ request.get_full_path }}?page={{ page_obj.paginator.num_pages }}">last</a>#}
-            {% endif %}
-
+            </div>
         </div>
     </div>
 
-    <div class="catalogue-greeting">
-{#        <h1>{{ request.get_full_path }}</h1>#}
-        {% if request.user.is_authenticated %}
-            <h1>Welcome Back {{ user }}!</h1>
-        {% else %}
-            <h1>Welcome to MLO Store</h1>
-            <h3>Explore our wide range of products and offers</h3>
-            <p><a href="{% url "login" %}">Login</a>
-                /
-                <a href="{% url "register" %}">Register</a>
-                and top up your account if you want to purchase something!
-            </p>
-        {% endif %}
-    </div>
 
-    <div class="recipes-container">
+
+    <div class="catalog-container">
 
         <div class="tags-container">
 
             <h4>Categories:</h4>
             <div class="tags-list">
                 {% for key,value in categories %}
-                    <a href="">{{ value }}</a>
+                    <a href="{% url 'departments' department=key %}">{{ value }}</a>
                 {% endfor %}
 
             </div>
 
         </div>
-        <div class="recipes-list">
+        <div class="catalog-list">
             {% for item in object_list %}
 
                 {% if item.owner_id != request.user.pk %}
 
-                    <a href="{% url 'details item' pk=item.pk %}" class="recipe">
+                    <a href="{% url 'details item' pk=item.pk %}" class="catalog-item">
 
-                        <img src="/media/{{ item.photo }}" alt="" class="img recipe-img">
+                        <img src="/media/{{ item.photo }}" alt="" class="img catalog-item-img">
                         <h5>{{ item.name }}</h5>
                         <p>{{ item.total_price }}</p>
 

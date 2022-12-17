@@ -3,7 +3,14 @@
         <div class="navs">
             <div class="first-nav">
                 <a href="{% url 'index' %}" class="first-item anchor-tag">Home page</a>
-                <a href="" class="anchor-tag">About</a>
+
+                {% if request.user.is_staff %}
+                    <a href="{% url 'all profiles' %}" class="anchor-tag">See all profiles </a>
+                    <a href="{% url 'general ledger' %}" class="anchor-tag">General Ledger </a>
+
+                {% else %}
+                    <a href="" class="anchor-tag">About</a>
+                {% endif %}
             </div>
             <div class="second-nav">
                 {% if not request.user.is_authenticated %}

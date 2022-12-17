@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views import generic as views
 
 from SoftUni_WebFramework_FinalProject.accounts.forms import UserCreateForm
+from SoftUni_WebFramework_FinalProject.mlo_store.models import Item
 
 UserModel = get_user_model()
 
@@ -44,3 +45,58 @@ class ProfileDetailView(views.DetailView):
     model = UserModel
 
     template_name = 'accounts/profile-details.html'
+
+
+class ProfileEditView(views.UpdateView):
+
+    # def __init__(self, *args, **kwargs):
+    #     super(ProfileEditView, self).__init__(*args, **kwargs)
+    #
+    #     # for fieldname in ['username', 'password1', 'password2']:
+    #     #     self.fields[fieldname].help_text = None
+    #
+    #     print(self.fields)
+    #     for field in self.fields:
+    #         pass
+    #         # print(self.fields.field)
+    #         # self.fields[field].help_text = None
+    #         # field.help_text = None
+
+    # class Meta:
+    #     help_texts = {
+    #         'username': None,
+    #         'email': None,
+    #     }
+
+    class Meta:
+        model = UserModel
+        fields = ("username", "first_name", "last_name", "gender")
+        help_texts = {
+            'username': None,
+            'email': None,
+        }
+
+    model = UserModel
+
+    template_name = 'accounts/profile-edit.html'
+    fields = ('username', 'first_name', 'last_name', 'gender')
+
+
+class AllProfilePosts(views.ListView):
+    model = Item
+
+    template_name = 'accounts/all-posts-by-profile.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        print(queryset)
+        queryset.filter(owner_id=self.request.user)
+        current_pk = self.kwargs['pk']
+        new_query_set_list = []
+        for item in queryset:
+            print(item.owner_id)
+            print(current_pk)
+            if item.owner_id==current_pk:
+                new_query_set_list.append(item)
+        print(new_query_set_list)
+        return new_query_set_list

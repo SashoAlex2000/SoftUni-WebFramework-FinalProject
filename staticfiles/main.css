@@ -307,7 +307,7 @@ nav bar
     margin: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 50%;
+    column-gap: 40%;
 }
 
 .navs a:hover {
@@ -383,8 +383,53 @@ index / catalogue
 ===============
 */
 
-.catalogue-greeting {
+/*.catalogue-greeting {*/
+/*    text-align: center;*/
+/*}*/
+
+.hero {
+    height: 40vh;
+    background: url(images/background-main.jpeg) center/cover no-repeat;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+    border-radius: var(--borderRadius);
+    position: relative;
+}
+
+.hero-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--borderRadius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.hero-text {
     text-align: center;
+    color: var(--white);
+}
+
+.hero-text a {
+    color: #ffe209;
+    text-transform: capitalize;
+}
+
+.hero-text a:hover {
+    color: #ffb109;
+    transition: var(--transition);
+}
+
+@media screen and (min-width: 768px) {
+    .hero-text h1 {
+        font-size: 4rem;
+        margin-bottom: 0;
+    }
 }
 
 .form-div {
@@ -407,13 +452,29 @@ index / catalogue
     width: 30%;
 }
 
+.paginator-div {
+    width: 75%;
+    height: auto;
+    margin: 0 auto;
+    /*padding: 10px;*/
+    position: relative;
+}
 
-.recipes-container {
+.paginator-inner {
+    width: 75%;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+}
+
+.catalog-container {
     display: grid;
     gap: 2rem 1rem;
 }
 
-.recipes-list {
+.catalog-list {
     display: grid;
     gap: 2rem 1rem;
     padding-bottom: 3rem;
@@ -448,30 +509,30 @@ index / catalogue
     color: var(--primary-500);
 }
 
-.recipe {
+.catalog-item {
     display: block;
     border: 0.1rem solid transparent;
 }
 
-.recipe:hover {
+.catalog-item:hover {
     border: 0.1rem solid #0f172a;
     border-radius: 5px;
 }
 
-.recipe-img {
+.catalog-item-img {
     height: 15rem;
     border-radius: var(--borderRadius);
     margin-bottom: 1rem;
 }
 
-.recipe h5 {
+.catalog-item h5 {
     margin-bottom: 0;
     margin-top: 0.25rem;
     line-height: 1;
     color: var(--grey-700);
 }
 
-.recipe p {
+.catalog-item p {
     margin-bottom: 0;
     line-height: 1;
     color: var(--grey-500);
@@ -480,26 +541,26 @@ index / catalogue
 }
 
 @media screen and (min-width: 576px) {
-    .recipes-list {
+    .catalog-list {
         grid-template-columns: 1fr 1fr;
     }
 
-    .recipe-img {
+    .catalog-item-img {
         height: 10rem;
     }
 }
 
 @media screen and (min-width: 992px) {
-    .recipes-container {
+    .catalog-container {
         grid-template-columns: 200px 1fr;
         gap: 1rem;
     }
 
-    .recipes-list {
+    .catalog-list {
         grid-template-columns: 1fr 1fr;
     }
 
-    .recipe p {
+    .catalog-item p {
         font-size: 0.85rem;
     }
 
@@ -515,11 +576,11 @@ index / catalogue
 }
 
 @media screen and (min-width: 1200px) {
-    .recipe h5 {
+    .catalog-item h5 {
         font-size: 1.15rem;
     }
 
-    .recipes-list {
+    .catalog-list {
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
@@ -544,8 +605,48 @@ profile page
     padding-top: 16%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 11rem;
+    column-gap: 3rem;
 }
+
+.profile-image {
+    align-content: center;
+}
+
+.profile-image img {
+    width: 100%;
+    height: 85%;
+}
+
+
+.profile-info h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+}
+
+.personal-info-span {
+    font-style: italic;
+    font-size: 1.45rem;
+}
+
+.button-div {
+    width: 65%;
+    margin: auto;
+    align-content: center;
+}
+
+.button-div button {
+    width: 65%;
+    margin-left: 2rem;
+    align-content: center;
+    border-radius: 10px;
+
+}
+
+
+.edit-profile-form .helptext {
+    display: none;
+}
+
 
 /*
 ===============
@@ -739,4 +840,165 @@ Item Details Form
 
     max-height: 100%;
     height: auto;
+}
+
+.comment-container {
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.comments {
+    width: 50%;
+    margin: auto;
+}
+
+.single-comment {
+    border-bottom: 1px solid dimgrey;
+}
+
+.single-comment h5 {
+    margin-bottom: 0;
+}
+
+.comment-post-form {
+    width: 50%;
+    margin: 1rem auto auto;
+}
+
+
+/*
+===============
+All posts by given user
+===============
+*/
+
+.single-post-by-user {
+    display: block;
+    width: 50%;
+    margin: auto;
+}
+
+.small-img-container {
+    height: 75%;
+    width: 75%;
+}
+
+.small-img {
+    max-height: 50%;
+    max-width: 50%;
+    border-radius: var(--borderRadius);
+    margin-bottom: 1rem;
+}
+
+
+/*
+===============
+Ledger
+===============
+*/
+
+.ledger-container {
+    width: 85%;
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+}
+
+.ledger-center {
+    padding-top: 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 3rem;
+}
+
+.position-div h5, h2 {
+    /*width: 65%;*/
+    /*margin: auto;*/
+    align-content: center;
+    text-align: center;
+}
+
+
+/*
+===============
+department -
+===============
+*/
+
+.department-container {
+    display: grid;
+    gap: 2rem 1rem;
+}
+
+.department-list {
+    display: grid;
+    gap: 2rem 1rem;
+    padding-bottom: 3rem;
+}
+
+.department-item {
+    display: block;
+    border: 0.1rem solid transparent;
+}
+
+.department-item:hover {
+    border: 0.1rem solid #0f172a;
+    border-radius: 5px;
+}
+
+.department-item-img {
+    height: 15rem;
+    border-radius: var(--borderRadius);
+    margin-bottom: 1rem;
+}
+
+.department-item h5 {
+    margin-bottom: 0;
+    margin-top: 0.25rem;
+    line-height: 1;
+    color: var(--grey-700);
+}
+
+.department-item p {
+    margin-bottom: 0;
+    line-height: 1;
+    color: var(--grey-500);
+    margin-top: 0.5rem;
+    letter-spacing: var(--letterSpacing);
+}
+
+@media screen and (min-width: 576px) {
+    .department-list {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .department-item-img {
+        height: 10rem;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    /*.catalog-container {*/
+    /*    grid-template-columns: 200px 1fr;*/
+    /*    gap: 1rem;*/
+    /*}*/
+    .department-list {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .department-item p {
+        font-size: 0.85rem;
+    }
+
+}
+
+@media screen and (min-width: 1200px) {
+    .department-item h5 {
+        font-size: 1.15rem;
+    }
+
+    .department-list {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }
