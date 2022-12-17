@@ -22,7 +22,9 @@
                         {{ object.first_name }} {{ object.last_name }}
                     </span></h4>
                 {% endif %}
-                <h4>Gender: <span class="personal-info-span">{{ object.gender }}</span></h4>
+                {% if not object.isCompany and request.user.pk == object.pk and object.gender %}
+                    <h4>Gender: <span class="personal-info-span">{{ object.gender }}</span></h4>
+                {% endif %}
                 <h4>Your balance: <span class="personal-info-span">{{ object.money }}</span></h4>
                 <h4>You have spent:
                     <span class="personal-info-span">${{ object.total_money_spent }}</span> dollars on the website
@@ -30,11 +32,12 @@
                 {% if request.user.pk == object.pk %}
                     <div class="button-div">
                         <button><a href="{% url 'edit profile' pk=object.pk %}">Edit profile</a></button>
+                        <button><a href="{% url 'delete profile' pk=object.pk %}">Delete profile</a></button>
                     </div>
 
                 {% endif %}
                 <div class="button-div">
-                    <button><a href="{% url 'posts profile' pk=object.pk %}">All offers from this user</a></button>
+                    <button><a href="{% url 'posts profile' pk=object.pk %}">All offers</a></button>
                 </div>
 
             </div>

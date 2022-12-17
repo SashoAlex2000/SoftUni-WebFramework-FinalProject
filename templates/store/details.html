@@ -9,7 +9,7 @@
                 <img src="/media/{{ object.photo }}" alt="profile picture">
             </div>
             <div class="details-info">
-                <h1>{{ object.name }}</h1> <br>
+                <h1 id="item-name" data-max-items="{{ max_items_to_buy }}">{{ object.name }}</h1> <br>
                 <h4>{{ object.description }}</h4>
                 {% if request.user.pk == object.owner_id %}
                     <p>Pure price is: {{ object.price }}</p>
@@ -17,34 +17,47 @@
                 {% else %}
                     <p>Price: {{ total_price }}</p>
                 {% endif %}
-
-                <p>{{ average_rating }} / 5 ({{ ratings_count }})</p>
-                {% if not has_user_rated %}
-                    <form action="{% url 'post rating' pk=object.pk %}" method="post">
-                        <label for="rating">Rate this item! x/5</label>
-                        <select name="rating" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                        <button type="submit">Rate</button>
-                        {% csrf_token %}
-                    </form>
-
+                {% if average_rating == 0 %}
+                    <p>Average user rating: N/A</p>
                 {% else %}
-                    <form action="{% url 'remove rating' pk=object.pk %}">
+                    <p>Average user rating {{ average_rating }} / 5 ({{ ratings_count }})</p>
+                {% endif %}
 
-                        <button type="submit">Remove your rating</button>
-                        {% csrf_token %}
-                    </form>
+                {% if not request.user.pk == object.owner_id %}
+
+                    {% if not has_user_rated %}
+                        <form action="{% url 'post rating' pk=object.pk %}" method="post">
+                            <label for="rating">Rate this item! x/5</label>
+                            <select name="rating" id="">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            <button type="submit">Rate</button>
+                            {% csrf_token %}
+                        </form>
+
+                    {% else %}
+                        <form action="{% url 'remove rating' pk=object.pk %}">
+
+                            <button type="submit">Remove your rating</button>
+                            {% csrf_token %}
+                        </form>
+                    {% endif %}
                 {% endif %}
                 {% if object.owner_id != request.user.pk %}
                     {% if can_buy %}
                         <form action="{% url 'buy item' pk=object.pk %}" method="post">
                             <label for="quantity">How many items do you want to buy?</label>
-                            <input type="number" name="quantity">
+                            <br>
+                            <div class="counter">
+                                <span class="down" onClick='decreaseCount(event, this)'>-</span>
+                                <input type="text" value="1" name="quantity" id="quantity">
+                                <span class="up" onClick='increaseCount(event, this)'>+</span>
+                            </div>
+                            {#                            <input type="number" name="quantity">#}
                             <button class="buy-item-btn">Buy this item!</button>
                             {% csrf_token %}
                         </form>
@@ -55,6 +68,8 @@
 
                 {% else %}
                     <a href="{% url 'edit item' pk=object.pk %}">Edit this item</a>
+                    <br>
+                    <a href="{% url 'delete item' pk=object.pk %}">Delete this item</a>
                 {% endif %}
 
 
@@ -87,5 +102,41 @@
         </div>
 
     </div>
+
+    <script>
+
+        const quantity = document.getElementById('quantity');
+        const heading = document.getElementById('item-name');
+        const max_items = heading.dataset['maxItems'];
+        const buyButton = document.getElementsByClassName('buy-item-btn')[0];
+
+        function increaseCount(a, b) {
+            var input = b.previousElementSibling;
+            var value = parseInt(input.value, 10);
+            value = isNaN(value) ? 0 : value;
+            value++;
+            input.value = value;
+            console.log(heading.dataset)
+
+            if (value > max_items) {
+                buyButton.disabled = true;
+            }
+
+        }
+
+        function decreaseCount(a, b) {
+            var input = b.nextElementSibling;
+            var value = parseInt(input.value, 10);
+            if (value > 1) {
+                value = isNaN(value) ? 0 : value;
+                value--;
+                input.value = value;
+            }
+            if (value <= max_items) {
+                buyButton.disabled = false;
+            }
+            console.log(max_items)
+        }
+    </script>
 
 {% endblock %}

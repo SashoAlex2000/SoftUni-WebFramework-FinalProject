@@ -1,0 +1,21 @@
+{% extends 'utils_templates/base.html' %}
+{% load static %}
+
+{% block page_content %}
+
+    <div class="delete-profile">
+        <h4>
+            Are you sure you want to this item?
+        </h4>
+        <div class="sure-buttons">
+            <form action="{% url 'delete item' pk=object.pk %}" method="post">
+                <button type="submit">Yes, I'm sure</button>
+                <br>
+                {% csrf_token %}
+                <!-- Go Back Button -->
+                <a class="edit-btn" href="javascript:history.back()">No, go back</a>
+        </div>
+
+    </div>
+
+{% endblock %}

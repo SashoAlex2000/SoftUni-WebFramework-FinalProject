@@ -16,6 +16,7 @@
 
                 {% for field in form %}
                     <div>
+                        {{ field.label_tag }} <br>
                         {{ field }}
                     </div>
 
@@ -46,22 +47,8 @@
         }
 
         function inputUnFocus (event) {
-
-            if (event.target.value === '') {
-                event.target.placeholder = 'Please fill in this field!'
-                if (event.target.parentElement.children.length <= 1) {
-                    const errorP = document.createElement('p');
-                    errorP.innerText = 'This field is required!'
-                    errorP.classList.add('error-p-msg')
-                    event.target.parentElement.appendChild(errorP)
-                }
-            }
-
-            if (event.target.value !== '') {
-                event.target.parentElement.children[1].remove()
-            }
-
             event.target.classList.remove('form-input-change-background')
+
         }
     </script>
 {% endblock %}

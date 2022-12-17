@@ -138,14 +138,14 @@ class ItemComment(models.Model):
 
     item = models.ForeignKey(
         Item,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
         null=False,
         blank=True,
     )
 
     user = models.ForeignKey(
         UserModel,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
     )
 
 
@@ -171,13 +171,13 @@ class ItemRating(models.Model):
 
     item = models.ForeignKey(
         Item,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
         null=False,
         blank=False,
     )
 
     user = models.ForeignKey(
         UserModel,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
     )
 

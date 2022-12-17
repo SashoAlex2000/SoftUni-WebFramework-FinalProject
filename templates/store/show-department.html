@@ -9,6 +9,10 @@
 
      <div class="department-container">
 
+        {% if not department_items %}
+            <h2>No Items in this department!</h2>
+        {% endif %}
+
         <div class="department-list">
             {% for item in department_items %}
 

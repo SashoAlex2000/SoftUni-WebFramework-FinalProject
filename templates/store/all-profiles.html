@@ -3,16 +3,17 @@
 
 {% block page_content %}
 
-    <ul>
+    <div class="all-profiles-container">
         {% for profile in object_list %}
-            <ul>
-                <div class="profile-list">
-                    {{ profile.username }}
-                    <a href="{% url 'profile' pk=profile.pk %}">Go to profile</a>
-                </div>
-            </ul>
+
+            <div class="single-profile-item">
+                {{ profile.username }}
+                <a href="{% url 'profile' pk=profile.pk %}">Go to profile</a>
+            </div>
+
         {% endfor %}
-    </ul>
+    </div>
+
 
 
 {% endblock %}

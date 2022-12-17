@@ -655,8 +655,9 @@ SignIn / SignUp form
 */
 
 .form-container {
-    height: 80vh;
+    min-height: 80vh;
     justify-content: center;
+    margin-bottom: 2rem;
 }
 
 .form-data {
@@ -842,9 +843,54 @@ Item Details Form
     height: auto;
 }
 
+.details-info p {
+    margin-bottom: 0.1rem;
+}
+
+.details-info a {
+    color: #364d70;
+    text-decoration: underline;
+}
+
+.details-info a:hover {
+    color: #1e293b;
+    transition: var(--transition);
+}
+
 .comment-container {
     justify-content: center;
     margin-bottom: 0.5rem;
+}
+
+.counter {
+    width: 16rem;
+    margin-left: 0;
+
+    /*margin: auto;*/
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.counter input {
+    width: 50px;
+    border: 0;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+    background: #0052cc;
+    color: #fff;
+    appearance: none;
+    outline: 0;
+}
+
+.counter span {
+    display: block;
+    font-size: 25px;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #0052cc;
+    user-select: none;
 }
 
 .comments {
@@ -874,8 +920,22 @@ All posts by given user
 
 .single-post-by-user {
     display: block;
-    width: 50%;
-    margin: auto;
+    width: 25%;
+    margin: auto auto 1.15rem 0;
+    border-bottom: 1px solid darkgray;
+}
+
+.single-post-by-user h5 {
+    margin-bottom: 0;
+}
+
+.single-post-by-user a {
+    color: #46a172;
+}
+
+.single-post-by-user a:hover {
+    color: #23724c;
+    transition: var(--transition);
 }
 
 .small-img-container {
@@ -926,12 +986,20 @@ department -
 ===============
 */
 
+.department-header {
+    width: 65%;
+    margin: auto;
+    text-align: center;
+    border-bottom: 1px solid #1e293b;
+}
+
 .department-container {
     display: grid;
     gap: 2rem 1rem;
 }
 
 .department-list {
+    margin-top: 1rem;
     display: grid;
     gap: 2rem 1rem;
     padding-bottom: 3rem;
@@ -1001,4 +1069,99 @@ department -
     .department-list {
         grid-template-columns: 1fr 1fr 1fr;
     }
+}
+
+/*
+===============
+all profiles
+===============
+*/
+
+.all-profiles-container {
+    margin-top: 2rem;
+}
+
+.single-profile-item {
+    width: 40%;
+    margin-bottom: 0.5rem;
+    border-bottom: 0.3rem solid #1e293b;
+    text-align: center;
+}
+
+.single-profile-item a {
+    color: #ab404b;
+}
+
+.single-profile-item a:hover {
+    color: #842029;
+    transition: var(--transition);
+}
+
+.errorlist {
+    margin-bottom: 0.15rem;
+}
+
+
+/*
+===============
+profile delete page
+===============
+*/
+
+.delete-profile {
+    width: 85%;
+    margin: auto;
+    text-align: center;
+}
+
+.delete-profile button {
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    border: 0.15rem solid #4e4988;
+}
+
+.delete-profile a {
+    color: #842029;
+    font-size: 2rem;
+    text-decoration: underline;
+}
+
+/*
+===============
+about
+===============
+*/
+
+
+.featured-title {
+  text-align: center;
+}
+
+.about-page h2 {
+  text-transform: none;
+  font-weight: bold;
+}
+
+.about-page {
+  display: grid;
+  gap: 2rem 4rem;
+  padding-bottom: 3rem;
+}
+
+.about-img {
+  border-radius: var(--borderRadius);
+  height: 300px;
+}
+
+@media screen and (min-width: 992px) {
+  .about-page {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 400px;
+    align-items: center;
+  }
+
+  .about-img {
+    height: 100%;
+  }
+
 }

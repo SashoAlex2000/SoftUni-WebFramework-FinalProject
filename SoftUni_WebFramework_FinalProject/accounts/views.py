@@ -48,26 +48,6 @@ class ProfileDetailView(views.DetailView):
 
 
 class ProfileEditView(views.UpdateView):
-
-    # def __init__(self, *args, **kwargs):
-    #     super(ProfileEditView, self).__init__(*args, **kwargs)
-    #
-    #     # for fieldname in ['username', 'password1', 'password2']:
-    #     #     self.fields[fieldname].help_text = None
-    #
-    #     print(self.fields)
-    #     for field in self.fields:
-    #         pass
-    #         # print(self.fields.field)
-    #         # self.fields[field].help_text = None
-    #         # field.help_text = None
-
-    # class Meta:
-    #     help_texts = {
-    #         'username': None,
-    #         'email': None,
-    #     }
-
     class Meta:
         model = UserModel
         fields = ("username", "first_name", "last_name", "gender")
@@ -80,6 +60,12 @@ class ProfileEditView(views.UpdateView):
 
     template_name = 'accounts/profile-edit.html'
     fields = ('username', 'first_name', 'last_name', 'gender')
+
+
+class ProfileDeleteView(views.DeleteView):
+    template_name = 'accounts/profile-delete-page.html'
+    model = UserModel
+    success_url = reverse_lazy('index')
 
 
 class AllProfilePosts(views.ListView):
@@ -96,7 +82,7 @@ class AllProfilePosts(views.ListView):
         for item in queryset:
             print(item.owner_id)
             print(current_pk)
-            if item.owner_id==current_pk:
+            if item.owner_id == current_pk:
                 new_query_set_list.append(item)
         print(new_query_set_list)
         return new_query_set_list

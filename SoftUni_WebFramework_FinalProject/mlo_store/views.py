@@ -1,7 +1,10 @@
+import math
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import generic as views
 
 from SoftUni_WebFramework_FinalProject.mlo_store.forms import ItemCreateForm, UserChargeAccountForm, ItemEditForm
@@ -154,7 +157,6 @@ class ItemDetailView(views.DetailView):
         data['total_price'] = total_price
 
         data['can_buy'] = total_price < self.request.user.money
-        print(total_price < self.request.user.money)
 
         current_comments = ItemComment.objects.filter(item_id=current_ID)
         data['comments'] = current_comments
@@ -164,10 +166,12 @@ class ItemDetailView(views.DetailView):
         average_rating = calculate_average_rating(current_ratings, ratings_count)
         has_user_rated = ItemRating.objects.filter(item_id=current_ID).filter(user_id=self.request.user.pk).count()
 
+        max_items_to_buy = math.floor(self.request.user.money / total_price)
+
         data['average_rating'] = average_rating
         data['ratings_count'] = ratings_count
         data['has_user_rated'] = has_user_rated
-        print(has_user_rated)
+        data['max_items_to_buy'] = max_items_to_buy
 
         # trying the post form
         print(self.request.POST)
@@ -181,10 +185,6 @@ def buy_item(request, pk):
     if not 'HTTP_REFERER' in request.META:
         return redirect('details item', pk=pk)
 
-    print(request.META['HTTP_REFERER'])
-    print('buying>?')
-    print(request)
-    print(request.POST)
 
     # initializing needed variables
     quantity = int(request.POST['quantity'] or 1)
@@ -200,18 +200,13 @@ def buy_item(request, pk):
     current_item.quantity -= quantity
     current_item.save()
 
-    print(cost)
-
-    print(item_owner)
-    print(fee)
 
     user_owner = current_item.owner
     user_owner.money += cost * quantity
     user_owner.total_money_earned += cost * quantity
-    print(user_owner.money)
+
     user_owner.save()
 
-    print(current_user)
     current_user.money -= cost * quantity
     current_user.money -= fee * quantity
     current_user.total_money_spent += cost * quantity
@@ -278,6 +273,12 @@ def edit_post_view(request, pk):
     )
 
 
+class ItemDeleteView(views.DeleteView):
+    template_name = 'store/delete-item.html'
+    model = Item
+    success_url = reverse_lazy('index')
+
+
 # @user_passes_test(lambda u: u.is_staff)
 def charge_account_view(request, pk):
     if not request.user.is_staff:
@@ -295,10 +296,8 @@ def charge_account_view(request, pk):
         form = UserChargeAccountForm(request.POST)
 
         if form.is_valid():
-            print(form.cleaned_data['top_up_amount'])
             topped_up_amount = form.cleaned_data['top_up_amount']
             current_user = UserModel.objects.filter(pk=current_profile_pk).get()
-            print(current_user.money)
             # current_user.money += form.cleaned_data['top_up_amount']
             current_user.money += topped_up_amount
             current_user.save()
@@ -347,7 +346,6 @@ def post_comment(request, pk):
         return redirect('details item', pk=pk)
 
     comment_text = request.POST['comment_text']
-    print(comment_text)
     item = Item.objects.filter(pk=pk).get()
 
     new_comment = ItemComment(
@@ -366,7 +364,6 @@ def post_rating(request, pk):
         return redirect('details item', pk=pk)
 
     item_rating = request.POST['rating']
-    print(item_rating)
     item = Item.objects.filter(pk=pk).get()
 
     new_rating = ItemRating(
@@ -385,7 +382,6 @@ def remove_rating(request, pk):
 
     current_item_rating = ItemRating.objects.filter(item_id=pk).filter(user_id=request.user.pk).get()
     print('this is the current rating')
-    print(current_item_rating)
     current_item_rating.delete()
 
     return redirect('details item', pk=pk)
@@ -406,7 +402,6 @@ def general_ledger_view(request):
 
 
 def show_department_view(request, department):
-
     department_items = Item.objects.filter(category__icontains=department)
 
     context = {
@@ -418,4 +413,11 @@ def show_department_view(request, department):
         request,
         'store/show-department.html',
         context,
+    )
+
+
+def show_about_view(request):
+    return render(
+        request,
+        'store/about-page.html',
     )

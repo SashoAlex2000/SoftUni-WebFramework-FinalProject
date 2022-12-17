@@ -5,6 +5,10 @@
 
     <div class="all-posts-by-user-container">
 
+        {% if not object_list %}
+            <h2>This user has not posts yet!</h2>
+        {% endif %}
+
         {% for post in object_list %}
 
             <div class="single-post-by-user">
