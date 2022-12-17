@@ -19,18 +19,49 @@
                 </select>
                 <select name="sorting" id="">
                     <option value="date-asc">By date, ascending</option>
-                    <option value="date-desc" {% if sorting_param == "date-desc" %} selected {% endif %}>By date, desc</option>
-                    <option value="price-desc" {% if sorting_param == "price-desc" %} selected {% endif %}>By price, desc</option>
-                    <option value="price-asc" {% if sorting_param == "price-asc" %} selected {% endif %}>By price, ascending</option>
+                    <option value="date-desc" {% if sorting_param == "date-desc" %} selected {% endif %}>By date, desc
+                    </option>
+                    <option value="price-desc" {% if sorting_param == "price-desc" %} selected {% endif %}>By price,
+                        desc
+                    </option>
+                    <option value="price-asc" {% if sorting_param == "price-asc" %} selected {% endif %}>By price,
+                        ascending
+                    </option>
                 </select>
 
                 <button type="submit">Search</button>
                 {% csrf_token %}
             </form>
         </div>
+        <div class="paginator-div">
+            {% if page_obj.has_previous %}
+{#                <a href="?page=1">first</a>#}
+
+                {% if request.GET %}
+                    <a href="{{ request.get_full_path }}&page={{ page_obj.previous_page_number }}">previous</a>
+                {% else %}
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+            {% endif %}
+
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+
+            {% if page_obj.has_next %}
+
+                {% if request.GET %}
+                    <a href="{{ request.get_full_path }}&page={{ page_obj.next_page_number }}">next</a>
+                {% else %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+{#                <a href="{{ request.get_full_path }}?page={{ page_obj.paginator.num_pages }}">last</a>#}
+            {% endif %}
+
+        </div>
     </div>
 
     <div class="catalogue-greeting">
+{#        <h1>{{ request.get_full_path }}</h1>#}
         {% if request.user.is_authenticated %}
             <h1>Welcome Back {{ user }}!</h1>
         {% else %}

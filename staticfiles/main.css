@@ -711,6 +711,7 @@ Item Details Form
 .details-container {
     min-height: 80vh;
     justify-content: center;
+    margin-bottom: 3rem;
 }
 
 .details-inner-container {

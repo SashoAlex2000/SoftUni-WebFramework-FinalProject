@@ -3,7 +3,7 @@ from enum import Enum
 from PIL import Image
 from django.contrib.auth import get_user_model
 from django.db import models
-
+from django.core import validators
 # Create your models here.
 
 UserModel = get_user_model()
@@ -84,6 +84,7 @@ class Item(models.Model):
         null=False,
     )
 
+    # TODO - see why this breaks editing in the ADMIN
     # def save(self, *args, **kwargs):
     #     super().save(self, *args, **kwargs)
     #
@@ -147,4 +148,36 @@ class ItemComment(models.Model):
         on_delete=models.RESTRICT,
     )
 
+
+class ItemRating(models.Model):
+
+    MIN_RATING = 1
+    MAX_RATING = 5
+
+    rating = models.IntegerField(
+        validators=(
+            validators.MinValueValidator(MIN_RATING),
+            validators.MaxValueValidator(MAX_RATING),
+        ),
+        blank=False,
+        null=False,
+    )
+
+    date_of_rating = models.DateTimeField(
+        auto_now_add=True,
+        blank=True,
+        null=False,
+    )
+
+    item = models.ForeignKey(
+        Item,
+        on_delete=models.RESTRICT,
+        null=False,
+        blank=False,
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
 

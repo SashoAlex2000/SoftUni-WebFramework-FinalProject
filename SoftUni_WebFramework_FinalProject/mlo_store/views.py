@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views import generic as views
 
 from SoftUni_WebFramework_FinalProject.mlo_store.forms import ItemCreateForm, UserChargeAccountForm
-from SoftUni_WebFramework_FinalProject.mlo_store.models import Item, AccountingBalance, ItemComment
+from SoftUni_WebFramework_FinalProject.mlo_store.models import Item, AccountingBalance, ItemComment, ItemRating
 
 from django.contrib.auth.decorators import user_passes_test
 
@@ -33,6 +33,17 @@ def calculate_fee(price, is_company):
         fee = 2 if price < 100 else 3
 
     return fee
+
+
+def calculate_average_rating(list_of_ratings, count):
+    total_sum = 0
+
+    for rating in list_of_ratings:
+        total_sum += rating.rating
+    # result = float(f'{float(sum(list_of_ratings) / count)}:.2f')
+    result = float(total_sum / count)
+
+    return result
 
 
 class ItemListView(views.ListView):  # Main page
@@ -109,6 +120,9 @@ class ItemListView(views.ListView):  # Main page
 
         return queryset
 
+    def get_paginate_by(self, queryset):
+        return 9
+
     def __get_pattern(self):
         return self.request.GET.get('pattern', None)
 
@@ -142,6 +156,16 @@ class ItemDetailView(views.DetailView):
         current_comments = ItemComment.objects.filter(item_id=current_ID)
         data['comments'] = current_comments
 
+        current_ratings = ItemRating.objects.filter(item_id=current_ID).all()
+        ratings_count = current_ratings.count()
+        average_rating = calculate_average_rating(current_ratings, ratings_count)
+        has_user_rated = ItemRating.objects.filter(user_id=self.request.user.pk).count()
+
+        data['average_rating'] = average_rating
+        data['ratings_count'] = ratings_count
+        data['has_user_rated'] = has_user_rated
+        print(has_user_rated)
+
         # trying the post form
         print(self.request.POST)
 
@@ -151,6 +175,9 @@ class ItemDetailView(views.DetailView):
 
 
 def buy_item(request, pk):
+    if not 'HTTP_REFERER' in request.META:
+        return redirect('details item', pk=pk)
+
     print(request.META['HTTP_REFERER'])
     print('buying>?')
     print(request)
@@ -288,6 +315,9 @@ class AllProfilesListView(views.ListView):
 
 
 def post_comment(request, pk):
+    if not 'HTTP_REFERER' in request.META:
+        return redirect('details item', pk=pk)
+
     comment_text = request.POST['comment_text']
     print(comment_text)
     item = Item.objects.filter(pk=pk).get()
@@ -299,5 +329,23 @@ def post_comment(request, pk):
     )
 
     new_comment.save()
+
+    return redirect('details item', pk=pk)
+
+
+def post_rating(request, pk):
+    if not 'HTTP_REFERER' in request.META:
+        return redirect('details item', pk=pk)
+
+    item_rating = request.POST['rating']
+    print(item_rating)
+    item = Item.objects.filter(pk=pk).get()
+
+    new_rating = ItemRating(
+        rating=item_rating,
+        item_id=pk,
+        user_id=request.user.pk,
+    )
+    new_rating.save()
 
     return redirect('details item', pk=pk)

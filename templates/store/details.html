@@ -12,6 +12,15 @@
                 <h1>{{ object.name }}</h1> <br>
                 <h4>{{ object.description }}</h4>
                 <p>{{ total_price }}</p>
+                <p>{{ average_rating }} / 5 ({{ ratings_count }})</p>
+                {% if not has_user_rated %}
+                    <form action="{% url 'post rating' pk=object.pk %}" method="post">
+                        <label for="rating">Rate this item! x/5</label>
+                        <input type="number" name="rating">
+                        <button type="submit">Rate</button>
+                        {% csrf_token %}
+                    </form>
+                {% endif %}
                 {% if can_buy %}
                     <form action="{% url 'buy item' pk=object.pk %}" method="post">
                         <label for="quantity">How many items do you want to buy?</label>
